@@ -19,17 +19,31 @@ let SearchController = class SearchController {
     constructor(searchService) {
         this.searchService = searchService;
     }
-    search(q) {
-        return this.searchService.searchUsers(q);
+    search(query) {
+        return this.searchService.searchUsers(this.requireQuery(query));
     }
-    autocomplete(q) {
-        return this.searchService.autocomplete(q);
+    autocomplete(query) {
+        return this.searchService.autocomplete(this.requireQuery(query));
     }
-    searchWithFilters(q, city) {
-        return this.searchService.searchWithFilters(q, city);
+    searchWithFilters(query, city) {
+        return this.searchService.searchWithFilters(this.requireQuery(query), this.normalizeOptionalQuery(city));
     }
-    searchPaginated(q, page = '1', limit = '10') {
-        return this.searchService.searchPaginated(q, parseInt(page), parseInt(limit));
+    searchPaginated(query, page, limit) {
+        if (page < 1 || limit < 1) {
+            throw new common_1.BadRequestException('page and limit must be positive integers');
+        }
+        return this.searchService.searchPaginated(this.requireQuery(query), page, limit);
+    }
+    requireQuery(query) {
+        const normalizedQuery = query?.trim();
+        if (!normalizedQuery) {
+            throw new common_1.BadRequestException('q must not be empty');
+        }
+        return normalizedQuery;
+    }
+    normalizeOptionalQuery(query) {
+        const normalizedQuery = query?.trim();
+        return normalizedQuery || undefined;
     }
 };
 exports.SearchController = SearchController;
@@ -58,10 +72,10 @@ __decorate([
 __decorate([
     (0, common_1.Get)('paginated'),
     __param(0, (0, common_1.Query)('q')),
-    __param(1, (0, common_1.Query)('page')),
-    __param(2, (0, common_1.Query)('limit')),
+    __param(1, (0, common_1.Query)('page', new common_1.DefaultValuePipe(1), common_1.ParseIntPipe)),
+    __param(2, (0, common_1.Query)('limit', new common_1.DefaultValuePipe(10), common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, String]),
+    __metadata("design:paramtypes", [String, Number, Number]),
     __metadata("design:returntype", void 0)
 ], SearchController.prototype, "searchPaginated", null);
 exports.SearchController = SearchController = __decorate([

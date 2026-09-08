@@ -10,6 +10,8 @@ import { SearchService } from './search.service';
 
 @Controller('search')
 export class SearchController {
+    private static readonly MAX_PAGE_SIZE = 100;
+
     constructor(private readonly searchService: SearchService) { }
 
     @Get('users')
@@ -39,8 +41,10 @@ export class SearchController {
         @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
         @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
     ) {
-        if (page < 1 || limit < 1) {
-            throw new BadRequestException('page and limit must be positive integers');
+        if (page < 1 || limit < 1 || limit > SearchController.MAX_PAGE_SIZE) {
+            throw new BadRequestException(
+                `page must be positive and limit must be between 1 and ${SearchController.MAX_PAGE_SIZE}`,
+            );
         }
 
         return this.searchService.searchPaginated(

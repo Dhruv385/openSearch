@@ -1,22 +1,10 @@
 import { OpenSearchService } from '../openSearch/openSearch.service';
 export declare class SearchService {
-    private openSearch;
+    private readonly openSearch;
     constructor(openSearch: OpenSearchService);
-    searchUsers(query: string): Promise<any[]>;
-    autocomplete(q: string): Promise<any[]>;
-    searchWithFilters(q: string, city?: string): Promise<any[]>;
-    searchPaginated(query: string, page?: number, limit?: number): Promise<{
-        data: any[];
-        total: number;
-        page: number;
-        limit: number;
-        error?: undefined;
-    } | {
-        data: never[];
-        total: number;
-        page: number;
-        limit: number;
-        error: any;
-    }>;
+    searchUsers(query: string): Promise<Awaited<ReturnType<OpenSearchService['search']>>>;
+    autocomplete(query: string): Promise<Awaited<ReturnType<OpenSearchService['autocomplete']>>>;
+    searchWithFilters(query: string, city?: string): Promise<Awaited<ReturnType<OpenSearchService['searchWithFilters']>>>;
+    searchPaginated(query: string, page?: number, limit?: number): Promise<Awaited<ReturnType<OpenSearchService['searchPaginated']>>>;
 }
 //# sourceMappingURL=search.service.d.ts.map

@@ -1,11 +1,12 @@
 import { SearchService } from './search.service';
 export declare class SearchController {
     private readonly searchService;
+    private static readonly MAX_PAGE_SIZE;
     constructor(searchService: SearchService);
-    search(query: string): Promise<any[]>;
-    autocomplete(query: string): Promise<any[]>;
-    searchWithFilters(query: string, city?: string): Promise<any[]>;
-    searchPaginated(query: string, page: number, limit: number): Promise<{
+    search(query: string | undefined): Promise<any[]>;
+    autocomplete(query: string | undefined): Promise<any[]>;
+    searchWithFilters(query: string | undefined, city?: string): Promise<any[]>;
+    searchPaginated(query: string | undefined, page: number, limit: number): Promise<{
         data: any[];
         total: number;
         page: number;

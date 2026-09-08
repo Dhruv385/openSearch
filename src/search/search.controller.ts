@@ -15,18 +15,18 @@ export class SearchController {
     constructor(private readonly searchService: SearchService) { }
 
     @Get('users')
-    search(@Query('q') query: string) {
+    search(@Query('q') query: string | undefined) {
         return this.searchService.searchUsers(this.requireQuery(query));
     }
 
     @Get('autocomplete')
-    autocomplete(@Query('q') query: string) {
+    autocomplete(@Query('q') query: string | undefined) {
         return this.searchService.autocomplete(this.requireQuery(query));
     }
 
     @Get('filters')
     searchWithFilters(
-        @Query('q') query: string,
+        @Query('q') query: string | undefined,
         @Query('city') city?: string,
     ) {
         return this.searchService.searchWithFilters(
@@ -37,7 +37,7 @@ export class SearchController {
 
     @Get('paginated')
     searchPaginated(
-        @Query('q') query: string,
+        @Query('q') query: string | undefined,
         @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
         @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
     ) {

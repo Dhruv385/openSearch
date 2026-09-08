@@ -17,20 +17,16 @@ let SearchService = class SearchService {
         this.openSearch = openSearch;
     }
     async searchUsers(query) {
-        const result = await this.openSearch.search(query);
-        return result;
+        return this.openSearch.search(query);
     }
-    async autocomplete(q) {
-        const result = await this.openSearch.autocomplete(q);
-        return result;
+    async autocomplete(query) {
+        return this.openSearch.autocomplete(query);
     }
-    async searchWithFilters(q, city) {
-        const result = await this.openSearch.searchWithFilters(q, city);
-        return result;
+    async searchWithFilters(query, city) {
+        return this.openSearch.searchWithFilters(query, city);
     }
     async searchPaginated(query, page = 1, limit = 10) {
-        const result = await this.openSearch.searchPaginated(query, page, limit);
-        return result;
+        return this.openSearch.searchPaginated(query, page, limit);
     }
 };
 exports.SearchService = SearchService;

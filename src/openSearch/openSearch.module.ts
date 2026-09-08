@@ -1,0 +1,9 @@
+import { Module } from "@nestjs/common";
+import { OpenSearchService } from "./openSearch.service";
+
+
+@Module({
+    providers: [OpenSearchService],
+    exports: [OpenSearchService],
+})
+export class OpenSearchModule {}

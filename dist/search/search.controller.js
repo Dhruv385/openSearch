@@ -11,11 +11,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var SearchController_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SearchController = void 0;
 const common_1 = require("@nestjs/common");
 const search_service_1 = require("./search.service");
-let SearchController = class SearchController {
+let SearchController = SearchController_1 = class SearchController {
     constructor(searchService) {
         this.searchService = searchService;
     }
@@ -29,8 +30,8 @@ let SearchController = class SearchController {
         return this.searchService.searchWithFilters(this.requireQuery(query), this.normalizeOptionalQuery(city));
     }
     searchPaginated(query, page, limit) {
-        if (page < 1 || limit < 1) {
-            throw new common_1.BadRequestException('page and limit must be positive integers');
+        if (page < 1 || limit < 1 || limit > SearchController_1.MAX_PAGE_SIZE) {
+            throw new common_1.BadRequestException(`page must be positive and limit must be between 1 and ${SearchController_1.MAX_PAGE_SIZE}`);
         }
         return this.searchService.searchPaginated(this.requireQuery(query), page, limit);
     }
@@ -47,18 +48,19 @@ let SearchController = class SearchController {
     }
 };
 exports.SearchController = SearchController;
+SearchController.MAX_PAGE_SIZE = 100;
 __decorate([
     (0, common_1.Get)('users'),
     __param(0, (0, common_1.Query)('q')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], SearchController.prototype, "search", null);
 __decorate([
     (0, common_1.Get)('autocomplete'),
     __param(0, (0, common_1.Query)('q')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], SearchController.prototype, "autocomplete", null);
 __decorate([
@@ -66,7 +68,7 @@ __decorate([
     __param(0, (0, common_1.Query)('q')),
     __param(1, (0, common_1.Query)('city')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", void 0)
 ], SearchController.prototype, "searchWithFilters", null);
 __decorate([
@@ -75,10 +77,10 @@ __decorate([
     __param(1, (0, common_1.Query)('page', new common_1.DefaultValuePipe(1), common_1.ParseIntPipe)),
     __param(2, (0, common_1.Query)('limit', new common_1.DefaultValuePipe(10), common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Number, Number]),
+    __metadata("design:paramtypes", [Object, Number, Number]),
     __metadata("design:returntype", void 0)
 ], SearchController.prototype, "searchPaginated", null);
-exports.SearchController = SearchController = __decorate([
+exports.SearchController = SearchController = SearchController_1 = __decorate([
     (0, common_1.Controller)('search'),
     __metadata("design:paramtypes", [search_service_1.SearchService])
 ], SearchController);

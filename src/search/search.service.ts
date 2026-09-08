@@ -3,25 +3,21 @@ import { OpenSearchService } from '../openSearch/openSearch.service';
 
 @Injectable()
 export class SearchService {
-    constructor(private openSearch: OpenSearchService) { }
+    constructor(private readonly openSearch: OpenSearchService) { }
 
     async searchUsers(query: string) {
-        const result = await this.openSearch.search(query);
-        return result;
+        return this.openSearch.search(query);
     }
 
-    async autocomplete(q: string) {
-        const result = await this.openSearch.autocomplete(q);
-        return result;
+    async autocomplete(query: string) {
+        return this.openSearch.autocomplete(query);
     }
 
-    async searchWithFilters(q: string, city?: string) {
-        const result = await this.openSearch.searchWithFilters(q, city);
-        return result;
+    async searchWithFilters(query: string, city?: string) {
+        return this.openSearch.searchWithFilters(query, city);
     }
 
-    async searchPaginated(query: string, page: number = 1, limit: number = 10) {
-        const result = await this.openSearch.searchPaginated(query, page, limit);
-        return result;
+    async searchPaginated(query: string, page = 1, limit = 10) {
+        return this.openSearch.searchPaginated(query, page, limit);
     }
 }
